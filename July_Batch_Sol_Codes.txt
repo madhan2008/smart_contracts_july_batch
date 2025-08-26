@@ -125,5 +125,161 @@ contract structSample{
 }
 }
 
---------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+Global Variables:
+
+1. msg (Message Object)
+
+Contains details about the current transaction or call.
+
+msg.sender → The address of the caller (who triggered the function).
+
+msg.value → The amount of Ether (in wei) sent along with the transaction.
+
+msg.data → Complete calldata (input data, function + parameters).
+
+msg.sig → First 4 bytes of msg.data (function selector).
+
+2. tx (Transaction Object)
+
+Contains details about the overall transaction (not just current call).
+
+tx.origin → The original external account (user) that started the transaction, even if calls went through other contracts.
+
+3. block (Block Object)
+
+Contains details about the current block where the transaction is included.
+
+block.timestamp → Current block’s timestamp (approximate time, set by miner).
+
+block.number → Current block number.
+
+block.difficulty → Difficulty level of mining this block.
+
+block.gaslimit → Maximum gas allowed in the block.
+
+block.coinbase → Address of the miner (who produced the block).
+
+4. address (members of address type)
+
+Every Ethereum address has some special members:
+
+balance → Returns the Ether balance of the address.
+
+transfer(amount) → Sends Ether to the address, auto-reverts if fails.
+
+send(amount) → Sends Ether, returns true/false (less safe).
+
+call(...) → Low-level call (used for sending Ether or calling other contracts).
+
+5. gas (Gas-related)
+
+gasleft() → Returns the amount of gas still available for execution.
+
+6. abi & bytes (Low-level data handling)
+
+abi.encode(...) → ABI encode data.
+
+abi.encodePacked(...) → Packed encoding (used in hashing).
+
+abi.decode(...) → Decode ABI data.
+
+bytes / bytes32 → Fixed or dynamic byte arrays.
+
+7. this
+
+Refers to the current contract’s address.
+
+address(this) → Gives the contract’s Ethereum address.
+
+address(this).balance → Balance of the contract.
+
+------------------------------------------------------------------------------------------------
+
+Array (Fixed & Dynamic)
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract arraySample{
+
+    //array --> fixed and dynamic 
+    //fixed length array 
+    //age[0]=35, age[1]=21, age[2]=39.......age[49]=25
+    uint8[50] age;
+
+    function setData(uint8 index, uint8 value) public {
+        age[index] = value;
+    }
+
+    function getData (uint8 _index) public view returns (uint8) {
+        return age[_index];
+    }
+    //Dynamic Array 
+    uint[] phoneNumber;
+
+    function setDynamicArray (uint _phoneno) public {
+        phoneNumber.push(_phoneno);
+        
+    }
+    function getDynamicArray (uint _index) public view returns(uint) {
+        return phoneNumber[_index];
+    }
+}
+
+--------------------------------------------------------------------------------------------------
+
+Local Variables:
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract local{
+    uint amount;
+    uint8 age;
+    string name;
+
+    //local variable 
+    //view: read the details from the blockchain 
+    //pure: not read any details form the blockchain
+
+    function getValue() public pure returns(uint){
+        uint value;
+        return value;
+    }
+}
+
+Global Variables:
+
+https://docs.soliditylang.org/en/latest/units-and-global-variables.html
+
+-----------------------------------------------------------------------------------------------------------
+
+Payable Function:
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract addresstype{
+    address alice = 0x1aE0EA34a72D944a8C7603FfB3eC30a6669E454C;
+
+    function getMoneySC() public payable {}
+
+    //balance --> check the balance of the address 
+    //transfer --> used to transfer/send to the address 
+
+    function TransferMoney() public {
+        payable(alice).transfer(address(this).balance);
+    }
+
+     /*function TransferMoney(uint _amount) public {
+        payable(alice).transfer(_amount);
+    }*/
+    
+    }
+
+     //fallback() external payable{}
+
+----------------------------------------------------------------------------------------------------------
 
