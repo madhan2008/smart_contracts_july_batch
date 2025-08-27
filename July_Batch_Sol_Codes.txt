@@ -283,3 +283,152 @@ contract addresstype{
 
 ----------------------------------------------------------------------------------------------------------
 
+
+If Else Ternary:
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract conditional{
+    int num1;
+    bool public result;
+
+    function condition (int _num1) public {
+        num1 =_num1;
+        if (num1 >100)
+        {
+            result = true;
+        }
+        else {
+            result= false;
+        }
+    }
+}
+contract ternary {
+    int num1;
+    bool public result; 
+    function condition (int _num1) public {
+        num1 =_num1;
+        num1>100?result=true:result=false;
+    }
+    }
+
+--------------------------------------------------------------------------------------------------
+
+Property Ownership:
+
+pragma solidity ^0.5.11;
+
+contract PropertyTransferApp {
+    address public contractOwner;
+    constructor() public {
+        contractOwner = msg.sender;
+    }
+    modifier onlyOwner() {
+        require(msg.sender == contractOwner);
+        _;
+    }
+    struct Property {
+        uint256 id;
+        string name;
+        string owner;
+        uint256 value;
+        uint256 area;
+    }
+    mapping(uint256 => Property) public properties;
+
+function addProperty(uint256 _propertyid, string memory _name, string memory _owner,  uint256 _value, uint256 _area) public onlyOwner {
+  
+        properties[_propertyid].name = _name;
+        properties[_propertyid].owner = _owner;
+        properties[_propertyid].value = _value;
+        properties[_propertyid].area = _area;
+    }
+    function queryPropertyById(uint256 _propertyid)
+        public view returns (string memory name, string memory owner,
+        uint256 area, uint256 value )
+    {
+        return (
+            properties[_propertyid].name,
+            properties[_propertyid].owner,
+            properties[_propertyid].area,
+            properties[_propertyid].value
+        );
+    }
+function transferPropertyOwnership(
+        uint256 _propertyid,
+        string memory _newOwner) public {
+        properties[_propertyid].owner = _newOwner;
+    }
+}
+
+Version 1: 
+
+pragma solidity ^0.5.11;
+
+contract PropertyTransferApp {
+    address public contractOwner;
+
+    constructor() public {
+        contractOwner = msg.sender;
+    }
+
+    struct Property {
+        uint256 id;
+        string name;
+        address owner;  // ✅ store actual Ethereum address
+        uint256 value;
+        uint256 area;
+    }
+
+    mapping(uint256 => Property) public properties;
+
+    // ✅ Only contract owner can add new properties
+    modifier onlyContractOwner() {
+        require(msg.sender == contractOwner, "Only contract owner can add properties");
+        _;
+    }
+
+    // ✅ Add Property
+    function addProperty(
+        uint256 _propertyid,
+        string memory _name,
+        address _owner,
+        uint256 _value,
+        uint256 _area
+    ) public onlyContractOwner {
+        properties[_propertyid] = Property({
+            id: _propertyid,
+            name: _name,
+            owner: _owner,
+            value: _value,
+            area: _area
+        });
+    }
+
+    // ✅ Query Property
+    function queryPropertyById(uint256 _propertyid)
+        public
+        view
+        returns (
+            string memory name,
+            address owner,
+            uint256 area,
+            uint256 value
+        )
+    {
+        Property storage prop = properties[_propertyid];
+        return (prop.name, prop.owner, prop.area, prop.value);
+    }
+
+    // ✅ Only current property owner can transfer ownership
+    function transferPropertyOwnership(uint256 _propertyid, address _newOwner) public onlyContractOwner{
+      //  require(msg.sender == properties[_propertyid].owner, "Only property owner can transfer");
+    // require(_newOwner != address(0), "New owner cannot be zero address");
+
+        properties[_propertyid].owner = _newOwner;
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------
