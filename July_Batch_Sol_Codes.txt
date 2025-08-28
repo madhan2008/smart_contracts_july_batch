@@ -432,3 +432,157 @@ contract PropertyTransferApp {
 
 
 --------------------------------------------------------------------------------------------------------------------
+
+				Inheritance:
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract parent {
+
+    string public name;   // state variable
+    uint8 age;            // state variable
+
+    // Write function to set name and age
+    function setDetails(string memory _name, uint8 _age) public {
+        name = _name;
+        age = _age;
+    }
+
+    // Getter for age
+    function getAge() public view returns(uint8) {
+        return age;
+    }
+}
+
+contract child is parent {
+
+    // Getter for name (though already public, this is an extra example)
+    function getName() public view returns (string memory) {
+        return name;
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------
+
+			Function Visibility
+
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract parent{
+
+    string public name;
+    uint8 age;
+
+    function getAge() public view returns(uint8){
+        return age;
+    }
+}
+
+contract child is parent {
+
+    function getName() public view returns (string memory) {
+        return name;
+    }
+    
+}
+
+contract functionVisibility{
+    string name;
+
+    function getName() public view returns(string memory){
+        return name;
+    }
+}
+
+
+---------------------------------------------------------------------------------------------------------------
+
+			Function Overloading
+
+pragma solidity ^0.5.11;
+contract Overloading {
+    
+    string name;
+    uint8 age;
+
+    function setDetails (string memory _name, uint8 _age) public{
+        name=_name;
+        age=_age;
+    }
+
+    function setDetails (string memory _name) public{
+        name=_name;
+    }
+
+    function setDetails (uint8 _age) public{
+        age=_age;
+    }
+}
+
+------------------------------------------------------------------------------------------------
+
+					Events
+
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract valueAlert{
+
+    uint price = 100;
+
+    //define the event 
+    event priceEvent (bool returnvalue);
+
+    function  bid (uint _amount) public returns(bool){
+        if(_amount>price){
+            //fire/trigger the event 
+            emit priceEvent (true);
+        }
+
+        return true;
+    }
+
+}
+
+------------------------------------------------------------------------------------------------------
+
+				Error - Handlers
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+contract errorhandlingSample{
+
+    uint balance = 100;
+
+    function deductBal(uint _amount) public returns(uint){
+        if(_amount < 2){
+            revert ("Input amount is not valid");
+        }
+        balance = balance -_amount;
+        return balance;
+    }
+
+    function deductBal1(uint _amount) public returns(uint){
+        require(_amount > 5, "Input amount is not valid one");
+        balance = balance -_amount;
+        return balance;
+    }
+
+     function deductBal2(uint _amount) public returns(uint){
+       assert(_amount > 2);
+        balance = balance -_amount;
+        return balance;
+    }
+
+}
+
+------------------------------------------------------------------------------------------------------------
+
+
