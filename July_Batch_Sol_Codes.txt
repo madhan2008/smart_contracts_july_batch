@@ -586,3 +586,145 @@ contract errorhandlingSample{
 ------------------------------------------------------------------------------------------------------------
 
 
+			Abstract Contract
+
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.6.10;
+
+//Define the abstract contract 
+abstract contract Student{
+    string public studentName;
+
+    function assignName() public virtual returns (string memory);
+}
+
+contract Member is Student {
+    function assignName() public override returns (string memory){
+        studentName = "Alice";
+        return studentName;
+    }
+}
+
+-----------------------------------------------------------------------------------------------
+
+			Interface
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
+
+// Define the interface
+interface Student {
+    // Declare the functions, but no implementation
+    function setAge() external returns (uint);
+    function setHeight() external returns (uint);
+}
+
+// Define a contract that implements the interface
+contract Member is Student {
+    // Implement the setAge function
+    function setAge() public override returns (uint) {
+        return 40;
+    }
+
+    // Implement the setHeight function
+    function setHeight() public override returns (uint) {
+
+        return 168;
+    }
+}
+
+
+-------------------------------------------------------------------------------------------
+
+			Libraray
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+// Define a library called Math
+
+library Math {
+
+    // Function to divide two numbers with a check to prevent division by zero
+
+    function div(int a, int b) public pure returns (int) {
+
+        require(b != 0, "The denominator is zero");  // Ensure that b is not zero
+
+        return a / b;  // Perform division
+
+    }
+
+}
+
+ 
+
+// Define a contract called A that uses the Math library
+
+contract A {
+
+    // Use the Math library for all int types
+
+    using Math for int;
+
+ 
+
+    // Function to divide two numbers using the Math library's div function
+
+    function divideNumbers(int a, int b) public pure returns (int) {
+
+        return a.div(b);  // Call the div function from Math library
+
+    }
+
+}
+
+----------------------------------------------------------------------------------------------
+
+			Token
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+// Define a library called Math
+
+library Math {
+
+    // Function to divide two numbers with a check to prevent division by zero
+
+    function div(int a, int b) public pure returns (int) {
+
+        require(b != 0, "The denominator is zero");  // Ensure that b is not zero
+
+        return a / b;  // Perform division
+
+    }
+
+}
+
+ 
+
+// Define a contract called A that uses the Math library
+
+contract A {
+
+    // Use the Math library for all int types
+
+    using Math for int;
+
+ 
+
+    // Function to divide two numbers using the Math library's div function
+
+    function divideNumbers(int a, int b) public pure returns (int) {
+
+        return a.div(b);  // Call the div function from Math library
+
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------------
+
